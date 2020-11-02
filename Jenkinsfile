@@ -10,7 +10,6 @@ pipeline{
 				sh "npm install"
 				sh "npm install @angular/cli"
 				sh "echo -------INIT Successfull------"
-				}
 			}
 		}
 
