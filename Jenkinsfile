@@ -2,6 +2,7 @@ pipeline{
 	agent any
 	environment{
 		registry = 'himanshuchaudhary/angular-app'
+		docker = credentials('docker')
 	}
 	stages{
 		stage('initialize npm'){
@@ -27,7 +28,7 @@ pipeline{
 			steps{
 				script{
             		dockerImage = docker.build("${registry}:$BUILD_NUMBER")
-            		docker.withRegistry( '',docker ){
+            		docker.withRegistry( '',docker){
             		dockerImage.push()
           		}
 	    	}
