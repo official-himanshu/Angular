@@ -28,7 +28,7 @@ pipeline{
 			steps{
 				script{
             		dockerImage = docker.build("${registry}:$BUILD_NUMBER")
-            		docker.withRegistry( '',docker){
+            		docker.withRegistry( '','docker-hub'){
             		dockerImage.push()
           		}
 	    	}
