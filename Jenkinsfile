@@ -25,12 +25,14 @@ pipeline{
 				branch 'master'
 			}
 			steps{
-				sh 'docker build -t $registry:$BUILD_NUMBER .'
-                echo "Image Build successfull"
-                withDockerRegistry([ credentialsId: "docker", url: "" ]) {
-                    sh 'docker push $registry:$BUILD_NUMBER'
-				}
-				echo "Image pushed successfully"
+				script{
+            		dockerImage = docker.build("${registry}:$BUILD_NUMBER")
+            		docker.withRegistry( '',docker ){
+            		dockerImage.push()
+          		}
+	    	}
+				sh 'docker rmi $registry:$BUILD_NUMBER'
+				echo "--------Image deleted successfully------"
 			}
 		}
 		stage('deploy to production'){
@@ -40,7 +42,7 @@ pipeline{
 			steps{
 				withKubeConfig(
             		clusterName: 'gke_resounding-sled-291408_us-central1-c_cluster-1', contextName: 'gke_resounding-sled-291408_us-central1-c_cluster-1', credentialsId: 'kube-config', namespace: 'capstone') {
-            			sh "cat Deployment.yml | sed 's/angular-app:v3/angular-app:$BUILD_NUMBER/' | kubectl apply -f -"
+            			sh "cat Deployment.yml | sed 's/angular-app:5/angular-app:$BUILD_NUMBER/' | kubectl apply -f -"
 				}
 			}
 		}

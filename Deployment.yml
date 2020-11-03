@@ -7,32 +7,17 @@ spec:
   selector:   
     matchLabels:
       app: angular
+      tier: frontend
   replicas: 1        
   template:
     metadata:
       labels:      
         app: angular
+        tier: frontend
     spec:
       containers:
         - name: angular
-          image: himanshuchaudhary/angular-app:v3
+          image: himanshuchaudhary/angular-app:5
           imagePullPolicy: Always
           ports:
             - containerPort: 80
----
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: angular-service
-      namespace: capstone
-      labels:
-        name: angular-deployment
-    spec:
-      ports:
-        - nodePort: 32100 
-          port: 80        
-          targetPort: 80  
-          protocol: TCP   
-      selector:           
-        app: angular
-      type: LoadBalancer    
