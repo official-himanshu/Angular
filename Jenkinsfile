@@ -7,16 +7,13 @@ pipeline{
 	stages{
 		stage('initialize npm'){
 			steps{
-				sh "echo -------INIT----------"
 				sh "npm install"
 				sh "npm install @angular/cli"
-				sh "echo -------INIT Successfull------"
 			}
 		}
 
 		stage('build'){
 			steps{
-				sh "echo --------building----------"
 				sh "npm run build --prod"
 			}
 		}
@@ -33,7 +30,6 @@ pipeline{
           		}
 	    	}
 				sh 'docker rmi $registry:$BUILD_NUMBER'
-				echo "--------Image deleted successfully------"
 			}
 		}
 		stage('deploy to production'){
@@ -49,19 +45,16 @@ pipeline{
 		}
 	}	
 	post{
-		always{
+		success{
+			cleanWs()
+		}
+		failure{
 			emailext ( 
 				subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!!', 
 				body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:Check console output at $BUILD_URL to view the results.',
 				to : 'himanshuchaudhary426@gmail.com',
 				attachLog: true
-				)
-		}
-		success{
-			cleanWs()
-		}
-		failure{
-			sh "echo failed"
+			)
 		}
 	}
 }
