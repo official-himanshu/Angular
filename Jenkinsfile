@@ -23,7 +23,7 @@ pipeline{
 			}
 			steps{
 				script{
-            		dockerImage = docker.build("${registry}:$BUILD_NUMBER","-f Dockerfile dist/")
+            		dockerImage = docker.build("${registry}:$BUILD_NUMBER")
             		docker.withRegistry( '','docker-hub'){
             		dockerImage.push()
           		}
