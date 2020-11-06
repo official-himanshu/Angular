@@ -1,15 +1,8 @@
-FROM node:latest as builder
-
-RUN mkdir -p /app
-
-WORKDIR /app
-
-COPY . .
-
-RUN npm install
-RUN npm install @angular/cli
-RUN npm run build --prod
+#FROM node:latest as builder
+#RUN mkdir -p /app
+#WORKDIR /app
+#COPY dist .
 
 FROM nginx:alpine
 COPY default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder app/dist/FormSubmit usr/share/nginx/html
+COPY dist/FormSubmit usr/share/nginx/html

@@ -2,19 +2,13 @@ pipeline{
 	agent any
 	environment{
 		registry = 'himanshuchaudhary/angular-app'
-		docker = credentials('docker')
 	}
 	stages{
-		stage('initialize npm'){
-			steps{
-				sh "npm install"
-				sh "npm install @angular/cli"
-			}
-		}
-
 		stage('build'){
 			steps{
-				sh "npm run build --prod"
+				nodejs('node15') {
+                    sh "npm run build --prod" 
+            	}
 			}
 		}
 
