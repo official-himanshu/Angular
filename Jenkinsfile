@@ -4,16 +4,16 @@ pipeline{
 		registry = 'himanshuchaudhary/angular-app'
 	}
 	stages{
-		stage('SCM'){
+		stage('initialize npm'){
 			steps{
-				checkout scm
+				sh "npm install"
+				sh "npm install @angular/cli"
 			}
 		}
+
 		stage('build'){
 			steps{
-				nodejs('node15') {
-                    sh "npm run build --prod" 
-            	}
+				sh "npm run build --prod"
 			}
 		}
 
