@@ -4,6 +4,11 @@ pipeline{
 		registry = 'himanshuchaudhary/angular-app'
 	}
 	stages{
+		stage('SCM'){
+			steps{
+				checkout scm
+			}
+		}
 		stage('build'){
 			steps{
 				nodejs('node15') {
