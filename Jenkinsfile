@@ -6,14 +6,17 @@ pipeline{
 	stages{
 		stage('initialize npm'){
 			steps{
-				sh "npm install"
-				sh "npm install @angular/cli"
+				nodejs('node15') {
+                    sh "npm install" 
+            	}
 			}
 		}
 
 		stage('build'){
 			steps{
-				sh "npm run build --prod"
+				nodejs('node15') {
+                    sh "npm run build --prod" 
+            	}
 			}
 		}
 
